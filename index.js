@@ -58,7 +58,7 @@ app.post('/api/produk', (req, res) => {
 
 // Update Data
 app.put('/api/produk/:id', (req, res) => {
-  let sql = `UPDATE product SET product_name='"${req.body.product_name}"', product_price='"${req.body.product_price}"' WHERE product_id="${req.params.id}";`;
+  let sql = `UPDATE product SET product_name="${req.body.product_name}", product_price="${req.body.product_price}" WHERE product_id="${req.params.id}";`;
   conn.query(sql, (err, result) => {
     if (err) {
       res.send({ status: 'Gagal', message: err.name });
@@ -66,6 +66,20 @@ app.put('/api/produk/:id', (req, res) => {
       res.send({ status: 'Sukses', result });
     }
   });
+});
+
+// Hapus Data
+app.delete('/api/produk/:id', (req, res) => {
+  conn.query(
+    `DELETE FROM product WHERE product_id=${req.params.id}`,
+    (err, result) => {
+      if (err) {
+        res.send({ status: 'Gagal', message: err.name });
+      } else {
+        res.send({ status: 'Sukses', result });
+      }
+    }
+  );
 });
 
 app.listen(6000, () => {
